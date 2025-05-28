@@ -64,7 +64,7 @@ struct CountryListView: View {
             .onReceive(locationService.$currentCountryCode) { code in
                 guard let code = code else { return }
 
-                // only to add if user has NOT removed detected country and it's not already selected
+                //to add only if user has NOT removed detected country and it's not already selected
                 if !hasUserRemovedDetectedCountry &&
                     !viewModel.selectedCountries.contains(where: { $0.alpha2Code.uppercased() == code.uppercased() }) {
 
