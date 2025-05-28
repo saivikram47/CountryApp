@@ -7,10 +7,8 @@
 
 import Foundation
 
-import Foundation
-
 struct Country: Identifiable, Codable, Equatable {
-    var id: String { alpha2Code }   // Unique and stable identifier
+    var id: String { alpha2Code } 
     let name: String
     let capital: String?
     let currencies: [Currency]?

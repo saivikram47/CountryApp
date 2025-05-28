@@ -7,7 +7,7 @@
 
 
 import CoreLocation
-// LocationService.swift
+
 class LocationService: NSObject, CLLocationManagerDelegate, ObservableObject {
     private let manager = CLLocationManager()
     @Published var currentCountryCode: String?

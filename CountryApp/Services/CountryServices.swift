@@ -6,7 +6,7 @@
 //
 
 import Foundation
-// CountryService.swift
+
 class CountryService {
     func fetchAllCountries(completion: @escaping (Result<[Country], Error>) -> Void) {
         guard let url = URL(string: "https://restcountries.com/v2/all") else { return }
