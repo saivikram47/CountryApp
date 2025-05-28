@@ -40,7 +40,7 @@ class LocationService: NSObject, CLLocationManagerDelegate, ObservableObject {
         }
     }
 
-    // Called when location is successfully updated
+
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         guard let location = locations.first else { return }
 
@@ -52,12 +52,10 @@ class LocationService: NSObject, CLLocationManagerDelegate, ObservableObject {
                 }
             } else {
                 DispatchQueue.main.async {
-                    self.currentCountryCode = "IN" // Fallback
+                    self.currentCountryCode = "IN"
                 }
             }
         }
 
-        // We can stop updating to save battery
-//        manager.stopUpdatingLocation()
     }
 }

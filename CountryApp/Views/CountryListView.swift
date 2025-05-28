@@ -11,7 +11,7 @@ struct CountryListView: View {
     @EnvironmentObject var locationService: LocationService
     @StateObject var viewModel = CountryListViewModel()
 
-    // Track if user removed detected country so it won't auto-readd
+    // to track if user removed detected country so it won't auto-readd
     @State private var hasUserRemovedDetectedCountry = false
 
     var body: some View {
@@ -21,12 +21,12 @@ struct CountryListView: View {
                     .textFieldStyle(.roundedBorder)
                     .padding()
 
-                // List of all countries to add
+                // to list of all countries to add
                 List {
                     ForEach(viewModel.filteredCountries) { country in
                         Button {
                             viewModel.addCountry(country)
-                            // Reset removal flag if user manually adds detected country back
+                            //  to reset removal flag if user manually adds detected country back
                             if country.alpha2Code.uppercased() == locationService.currentCountryCode?.uppercased() {
                                 hasUserRemovedDetectedCountry = false
                             }
@@ -36,7 +36,7 @@ struct CountryListView: View {
                     }
                 }
 
-                // List of selected countries (including detected/default)
+                // list of selected countries (including detected/default)
                 List {
                     ForEach(viewModel.selectedCountries) { country in
                         HStack {
@@ -47,7 +47,7 @@ struct CountryListView: View {
                             Spacer()
                             Button(action: {
                                 viewModel.removeCountry(country)
-                                // If user removes detected country, set removal flag
+                                
                                 if country.alpha2Code.uppercased() == locationService.currentCountryCode?.uppercased() {
                                     hasUserRemovedDetectedCountry = true
                                 }
@@ -64,7 +64,7 @@ struct CountryListView: View {
             .onReceive(locationService.$currentCountryCode) { code in
                 guard let code = code else { return }
 
-                // Only add if user has NOT removed detected country and it's not already selected
+                // only to add if user has NOT removed detected country and it's not already selected
                 if !hasUserRemovedDetectedCountry &&
                     !viewModel.selectedCountries.contains(where: { $0.alpha2Code.uppercased() == code.uppercased() }) {
 
