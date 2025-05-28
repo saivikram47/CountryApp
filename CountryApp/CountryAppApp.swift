@@ -6,15 +6,16 @@
 //
 
 import SwiftUI
+import CoreLocation
 
 @main
 struct CountryAppApp: App {
-    let persistenceController = PersistenceController.shared
+    @StateObject private var locationService = LocationService()
 
     var body: some Scene {
         WindowGroup {
-            ContentView()
-                .environment(\.managedObjectContext, persistenceController.container.viewContext)
+            CountryListView()
+                .environmentObject(locationService)
         }
     }
 }
