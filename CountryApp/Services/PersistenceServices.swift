@@ -8,6 +8,7 @@
 import Foundation
 
 class PersistenceService {
+    
     private let key = "SavedCountries"
 
     func saveCountries(_ countries: [Country]) {
@@ -22,4 +23,5 @@ class PersistenceService {
         else { return [] }
         return countries
     }
+    
 }

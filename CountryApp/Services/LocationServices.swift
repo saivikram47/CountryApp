@@ -8,27 +8,56 @@
 
 import CoreLocation
 
+import Foundation
+import CoreLocation
+import Combine
+
 class LocationService: NSObject, CLLocationManagerDelegate, ObservableObject {
     private let manager = CLLocationManager()
+    
     @Published var currentCountryCode: String?
 
     override init() {
         super.init()
         manager.delegate = self
         manager.requestWhenInUseAuthorization()
-        manager.startUpdatingLocation()
     }
 
+    // Called when location permissions change
+    func locationManagerDidChangeAuthorization(_ manager: CLLocationManager) {
+        switch manager.authorizationStatus {
+        case .authorizedWhenInUse, .authorizedAlways:
+            manager.startUpdatingLocation()
+        case .denied, .restricted:
+            // Default to India if denied or restricted
+            DispatchQueue.main.async {
+                self.currentCountryCode = "IN"
+            }
+        case .notDetermined:
+            break
+        @unknown default:
+            break
+        }
+    }
+
+    // Called when location is successfully updated
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         guard let location = locations.first else { return }
-        CLGeocoder().reverseGeocodeLocation(location) { placemarks, _ in
-            self.currentCountryCode = placemarks?.first?.isoCountryCode
-        }
-    }
 
-    func locationManagerDidChangeAuthorization(_ manager: CLLocationManager) {
-        if manager.authorizationStatus == .denied {
-            self.currentCountryCode = "IN" // default to your country
+        let geocoder = CLGeocoder()
+        geocoder.reverseGeocodeLocation(location) { placemarks, error in
+            if let code = placemarks?.first?.isoCountryCode {
+                DispatchQueue.main.async {
+                    self.currentCountryCode = code
+                }
+            } else {
+                DispatchQueue.main.async {
+                    self.currentCountryCode = "IN" // Fallback
+                }
+            }
         }
+
+        // We can stop updating to save battery
+//        manager.stopUpdatingLocation()
     }
 }

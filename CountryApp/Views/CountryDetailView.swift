@@ -5,12 +5,11 @@
 //  Created by Apple on 28/05/25.
 //
 
-
 import SwiftUICore
 
 struct CountryDetailView: View {
+    
     let country: Country
-
     var body: some View {
         VStack(spacing: 16) {
             Text("Capital: \(country.capital ?? "N/A")")
