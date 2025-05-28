@@ -6,7 +6,6 @@
 //
 
 import Foundation
-
 class CountryListViewModel: ObservableObject {
     @Published var countries: [Country] = []
     @Published var selectedCountries: [Country] = []
@@ -24,9 +23,21 @@ class CountryListViewModel: ObservableObject {
         service.fetchAllCountries { result in
             DispatchQueue.main.async {
                 switch result {
-                case .success(let countries): self.countries = countries
-                case .failure(let error): print("Error: \(error)")
+                case .success(let countries):
+                    self.countries = countries
+                case .failure(let error):
+                    print("Error: \(error)")
                 }
+            }
+        }
+    }
+
+    var filteredCountries: [Country] {
+        if searchQuery.isEmpty {
+            return countries
+        } else {
+            return countries.filter {
+                $0.name.lowercased().contains(searchQuery.lowercased())
             }
         }
     }
